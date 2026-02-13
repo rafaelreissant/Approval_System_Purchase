@@ -93,6 +93,22 @@ public class Order {
         this.requester = requester;
     }
 
+    public Employee getRequester() {
+        return requester;
+    }
+
+    public void setRequester(Employee requester) {
+        this.requester = requester;
+    }
+
+    public Employee getApprover() {
+        return approver;
+    }
+
+    public void setApprover(Employee approver) {
+        this.approver = approver;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

@@ -26,6 +26,14 @@ public class Employee {
         return employeePosition.getApprovalLimit().compareTo(orderValue) >= 0;
     }
 
+    public UUID getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(UUID employeeId) {
+        this.employeeId = employeeId;
+    }
+
     public String getFullName() {
         return fullName;
     }
