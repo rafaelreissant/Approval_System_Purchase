@@ -15,7 +15,7 @@ public class EmployeeRepository {
         return true;
     }
 
-    public Employee getEmployee(UUID id){
+    public Employee findEmployeeById(UUID id){
         return employees.get(id);
     }
 

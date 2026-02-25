@@ -16,6 +16,10 @@ public class OrderRepository {
         orders.put(order.getOrderId(), order);
     }
 
+    public Order findOrderById(UUID id){
+        return orders.get(id);
+    }
+
     public List<Order> getRequester(Employee employee){
         return orders.values()
                 .stream()
