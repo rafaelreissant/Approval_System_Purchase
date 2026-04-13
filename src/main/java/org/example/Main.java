@@ -23,6 +23,7 @@ public class Main {
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         OrderService orderService = new OrderService(orderRepository, employeeRepository);
 
+
         boolean running = true;
 
         while (running) {
@@ -32,6 +33,7 @@ public class Main {
             System.out.println("2 - Create Order");
             System.out.println("3 - Approve Order");
             System.out.println("4 - List Orders by Employee");
+            System.out.println("5 - View Order History");
             System.out.println("0 - Exit");
 
             int option = scanner.nextInt();
@@ -103,6 +105,30 @@ public class Main {
                             ));
                     break;
 
+                case 5:
+                    System.out.print("Order ID: ");
+                    UUID orderIdHistory = UUID.fromString(scanner.nextLine());
+
+                    Order orderHistory = orderRepository.findOrderById(orderIdHistory);
+
+                    if(orderHistory == null){
+                        System.out.println("Order not found");
+                        break;
+                    }
+
+                    System.out.println("\n=== ORDER HISTORY ===");
+
+                    orderHistory.getHistory().stream().forEach(h -> {
+                        String actorName = (h.getActor() != null)
+                                ? h.getActor().getFullName() : "SYSTEM";
+
+                        System.out.println(
+                                h.getTimestamp() + " - " +
+                                        h.getAction() + " by " +
+                                        actorName
+                        );
+                    });
+                    break;
                 case 0:
                     running = false;
                     break;

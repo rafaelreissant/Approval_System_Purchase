@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.entity.Employee;
 import org.example.entity.Order;
+import org.example.entity.OrderHistory;
 import org.example.repository.EmployeeRepository;
 import org.example.repository.OrderRepository;
 
@@ -86,5 +87,16 @@ public class OrderService {
         }
 
         return orderRepository.getApprover(approver);
+    }
+
+    public List<OrderHistory> getOrderHistory(UUID orderId){
+
+        Order order = new OrderRepository().findOrderById(orderId);
+
+        if (order == null){
+            throw new RuntimeException("Order not found");
+        }
+
+        return order.getHistory();
     }
 }

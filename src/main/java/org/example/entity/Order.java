@@ -3,8 +3,7 @@ package org.example.entity;
 import org.example.entity.enums.OrderStatus;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Order {
     private UUID orderId;
@@ -14,13 +13,19 @@ public class Order {
     private Employee requester;
     private Employee approver;
 
+    private List<OrderHistory> history = new ArrayList<>();
+
     public Order(String description, BigDecimal purchaseValue, Employee requester) {
         this.orderId = UUID.randomUUID();
         this.description = description;
         this.purchaseValue = purchaseValue;
         this.orderStatus = OrderStatus.PENDING;
         this.requester = requester;
+
+        history.add(new OrderHistory("Created", requester));
     }
+
+
 
     public void approve(Employee approver){
         if (orderStatus != OrderStatus.PENDING){
@@ -35,9 +40,10 @@ public class Order {
             throw new RuntimeException("Approver does not have permission");
         }
 
-
         this.approver = approver;
         this.orderStatus = OrderStatus.APPROVED;
+
+        history.add(new OrderHistory("Approved", approver));
     }
 
     public void reject(Employee approver){
@@ -51,6 +57,8 @@ public class Order {
 
         this.approver = approver;
         this.orderStatus = OrderStatus.REPROVED;
+
+        history.add(new OrderHistory("Rejected", approver));
     }
 
     public UUID getOrderId() {
@@ -65,48 +73,30 @@ public class Order {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public BigDecimal getPurchaseValue() {
         return purchaseValue;
     }
 
-    public void setPurchaseValue(BigDecimal purchaseValue) {
-        this.purchaseValue = purchaseValue;
-    }
 
     public OrderStatus getOrderStatus() {
         return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
     }
 
     public Employee getEmployee() {
         return requester;
     }
 
-    public void setEmployee(Employee requester) {
-        this.requester = requester;
-    }
 
     public Employee getRequester() {
         return requester;
-    }
-
-    public void setRequester(Employee requester) {
-        this.requester = requester;
     }
 
     public Employee getApprover() {
         return approver;
     }
 
-    public void setApprover(Employee approver) {
-        this.approver = approver;
+    public List<OrderHistory> getHistory(){
+        return Collections.unmodifiableList(history);
     }
 
     @Override
