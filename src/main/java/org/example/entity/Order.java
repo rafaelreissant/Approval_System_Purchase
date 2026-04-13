@@ -3,6 +3,7 @@ package org.example.entity;
 import org.example.entity.enums.OrderStatus;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Order {
@@ -10,6 +11,7 @@ public class Order {
     private String description;
     private BigDecimal purchaseValue;
     private OrderStatus orderStatus;
+    private LocalDateTime createdAt;
     private Employee requester;
     private Employee approver;
 
@@ -21,13 +23,19 @@ public class Order {
         this.purchaseValue = purchaseValue;
         this.orderStatus = OrderStatus.PENDING;
         this.requester = requester;
+        this.createdAt = LocalDateTime.now();
 
         history.add(new OrderHistory("Created", requester));
     }
 
 
-
     public void approve(Employee approver){
+
+        if (isExperided()){
+            this.orderStatus = OrderStatus.EXPIRED;
+            throw new RuntimeException("Order expired after 48 hours");
+        }
+
         if (orderStatus != OrderStatus.PENDING){
             throw new RuntimeException("Order already finished");
         }
@@ -97,6 +105,10 @@ public class Order {
 
     public List<OrderHistory> getHistory(){
         return Collections.unmodifiableList(history);
+    }
+
+    public boolean isExperided(){
+        return LocalDateTime.now().isAfter(createdAt.plusHours(48));
     }
 
     @Override
