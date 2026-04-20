@@ -3,10 +3,7 @@ package org.example.repository;
 import org.example.entity.Employee;
 import org.example.entity.Order;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class OrderRepository {
 
@@ -16,8 +13,9 @@ public class OrderRepository {
         orders.put(order.getOrderId(), order);
     }
 
-    public Order findOrderById(UUID id){
-        return orders.get(id);
+    public Optional<Order>  findOrderById(UUID id){
+        var order = orders.get(id);
+        return Optional.ofNullable(order);
     }
 
     public List<Order> getRequester(Employee employee){

@@ -15,8 +15,9 @@ public class EmployeeRepository {
         return true;
     }
 
-    public Employee findEmployeeById(UUID id){
-        return employees.get(id);
+    public Optional<Employee>  findEmployeeById(UUID id){
+        var employee = employees.get(id);
+        return Optional.ofNullable(employee);
     }
 
     public List<Employee> findAllEmployee(){

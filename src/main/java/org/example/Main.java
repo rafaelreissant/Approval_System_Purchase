@@ -9,6 +9,7 @@ import org.example.service.EmployeeService;
 import org.example.service.OrderService;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -109,16 +110,18 @@ public class Main {
                     System.out.print("Order ID: ");
                     UUID orderIdHistory = UUID.fromString(scanner.nextLine());
 
-                    Order orderHistory = orderRepository.findOrderById(orderIdHistory);
+                    Optional<Order> orderHistory = orderRepository.findOrderById(orderIdHistory);
 
-                    if(orderHistory == null){
+                    if(orderHistory.isEmpty()){
                         System.out.println("Order not found");
                         break;
                     }
 
                     System.out.println("\n=== ORDER HISTORY ===");
 
-                    orderHistory.getHistory().stream().forEach(h -> {
+                    Order order_ = orderHistory.get();
+
+                    order_.getHistory().stream().forEach(h -> {
                         String actorName = (h.getActor() != null)
                                 ? h.getActor().getFullName() : "SYSTEM";
 
